@@ -9,11 +9,27 @@ class BaseModel:
     """Base model that defines all common
     attributes/methods for other classes
     """
-    def __init__(self):
-        """Constructor for the base class"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor for the base class
+        
+        args:
+            *args: none
+            **kwargs: keyword arguments
+        """
+        #self.id = str(uuid.uuid4())
+
+        if len(kwargs) > 0:
+            for k, v in kwargs.items():
+                if not k == '__class__':
+                    if k == 'created_at' or k == 'updated_at':
+                        v = datetime.fromisoformat(kwargs[k])
+                    setattr(self, k, v)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+
 
     def __str__(self):
         """Returns a string"""
