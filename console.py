@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models import storage
 import json
 
+
 class HBNBCommand(cmd.Cmd):
 
     """
@@ -48,34 +49,38 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(arguments) < 2:
             print("** instance id missing **")
-        elif not  arguments[0] == "BaseModel":
+        elif not arguments[0] == "BaseModel":
             print("** class doesn't exist **")
-        elif not key in instances:
-                print("** no instance found **")
+        elif key not in instances:
+            print("** no instance found **")
         else:
             print(instances[key])
 
     def do_destroy(self, arg):
-        arguments = arg.split()
-        class_name = arguments[0]
-        class_id = arguments[1]
-        
+
         instances = storage.all()
-        key = f"{class_name}.{class_id}"
 
+        if arg:
+            arguments = arg.split()
 
-        if len(arguments) < 1:
-            print("** class name missing **")
-        elif len(arguments) < 2:
-            print("** instance id missing **")
-        elif not  arguments[0] == "BaseModel":
-            print("** class doesn't exist **")
-        elif not key in instances:
-                print("** no instance found **")
+            if len(arguments) == 2:
+                class_name = arguments[0]
+                class_id = arguments[1]
+                key = f"{class_name}.{class_id}"
+
+                if not arguments[0] == "BaseModel":
+                    print("** class doesn't exist **")
+                elif key not in instances:
+                    print("** no instance found **")
+                else:
+                    del instances[key]
+                    storage.save()
+            else:
+                print("** instance id missing **")
+
         else:
-            del instances[key]
-            storage.save()
-    
+            print("** class name missing **")
+
     def do_all(self, arg):
         """Prints all string representation of all instances
         based or not on the class name.
@@ -101,8 +106,6 @@ class HBNBCommand(cmd.Cmd):
                         obj_list.append(str(obj))
                 print(obj_list)
 
-            # Display string representations of instances of the specified class
-
     def emptyline(self):
         """Empty line + Enter does nothing"""
         pass
@@ -114,6 +117,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """command to exit the program"""
         return True
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
