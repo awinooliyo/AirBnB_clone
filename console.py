@@ -105,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
                     if obj.__class__.__name__ == class_name:
                         obj_list.append(str(obj))
                 print(obj_list)
-        
+
     def do_update(self, arg):
         """
         Updates an instance based on the class name and id by adding or
@@ -135,8 +135,9 @@ class HBNBCommand(cmd.Cmd):
         if hasattr(obj, attr_name):
             attr_type = type(getattr(obj, attr_name))
             if attr_value is not None:
-                if attr_type == str and attr_value.startswith('"') and attr_value.endswith('"'):
-                    attr_value = attr_value[1:-1]  # Removing quotes for string value
+                if attr_type == str and attr_value.startswith('"') \
+                        and attr_value.endswith('"'):
+                    attr_value = attr_value[1:-1]
                 try:
                     cast_value = attr_type(attr_value)
                 except ValueError:
