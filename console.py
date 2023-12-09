@@ -106,6 +106,57 @@ class HBNBCommand(cmd.Cmd):
                         obj_list.append(str(obj))
                 print(obj_list)
 
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file).
+        """
+        arguments = arg.split()
+
+        if len(arguments) < 4:
+            print("** insufficient arguments for update **")
+            return
+
+        class_name = arguments[0]
+        instance_id = arguments[1]
+        attr_name = arguments[2]
+        attr_value = ' '.join(arguments[3:]) if len(arguments) > 3 else None
+
+        key = f"{class_name}.{instance_id}"
+        if key not in storage.all():
+            print("** no instance found **")
+            return
+
+        obj = storage.all()[key]
+        if attr_name in ["id", "created_at", "updated_at"]:
+            print("** cannot update id, created_at, or updated_at **")
+            return
+
+        if hasattr(obj, attr_name):
+            attr_type = type(getattr(obj, attr_name))
+            if attr_value is not None:
+                if attr_type == str and attr_value.startswith('"') \
+                        and attr_value.endswith('"'):
+                    attr_value = attr_value[1:-1]
+                try:
+                    cast_value = attr_type(attr_value)
+                except ValueError:
+                    print(f"** invalid value for {attr_name} **")
+                    return
+                if isinstance(cast_value, (str, int, float)):
+                    setattr(obj, attr_name, cast_value)
+                    obj.save()
+                    storage.save()
+                else:
+                    print("Attribute type must be string, int, or float")
+            else:
+                print("** value missing **")
+        else:
+            # Dynamically adding the attribute if it doesn't exist
+            setattr(obj, attr_name, attr_value)
+            obj.save()
+            storage.save()
+
     def emptyline(self):
         """Empty line + Enter does nothing"""
         pass
