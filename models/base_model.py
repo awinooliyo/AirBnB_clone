@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """The module defining a base class for all models"""
 
 from datetime import datetime
