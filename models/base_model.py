@@ -34,7 +34,11 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of an instance"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__,
+            self.id,
+            self.__dict__
+        )
 
     def save(self):
         """Updates yje public instance attribute
