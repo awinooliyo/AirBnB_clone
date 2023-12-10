@@ -9,6 +9,7 @@ from datetime import datetime
 from unittest.mock import patch
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
 
     def test_init(self):
@@ -26,7 +27,7 @@ class TestBaseModel(unittest.TestCase):
 
     def test_init_with_kwargs(self):
         """
-        Create a BaseModel instance with 
+        Create a BaseModel instance with
         specific data using keyword arguments
         """
         data = {
@@ -62,6 +63,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_model_dict['created_at'], str)
         self.assertIsInstance(base_model_dict['updated_at'], str)
 
+
 if __name__ == '__main__':
     unittest.main()
-
