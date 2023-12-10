@@ -5,6 +5,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 import json
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
