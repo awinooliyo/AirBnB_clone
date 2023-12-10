@@ -1,4 +1,4 @@
-"""Base Model"""
+"""The module defining a base class for all models"""
 
 from datetime import datetime
 import uuid
@@ -32,7 +32,7 @@ class BaseModel:
             storage.new(self)
 
     def __str__(self):
-        """Returns a string"""
+        """Returns a string representation of an instance"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
