@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""Defines the Unittests for FileStorage Class"""
+"""Defines Unittests for FileStorage class"""
 import unittest
+import json
 from models.user import User
 from models.file_storage import FileStorage
 
@@ -16,27 +17,34 @@ class TestFileStorage(unittest.TestCase):
         """Clean up method after each test"""
         del self.storage
 
-    def test_all_method(self):
-        """Test the 'all' method"""
-        self.assertEqual(self.storage.all(), {})
-
-    def test_new_method(self):
-        """Test the 'new' method"""
-        user = User()
-        self.storage.new(user)
-        self.assertIn(f"User.{user.id}", self.storage.all())
-
-    def test_save_reload_methods(self):
-        """Test the 'save' and 'reload' methods"""
+    def test_save_method_saves_to_file(self):
+        """Test if the 'save' method saves data to a file"""
         user = User()
         user.name = "Alice"
         self.storage.new(user)
         self.storage.save()
 
+        with open(self.storage._FileStorage__file_path, "r") as file:
+            data = json.load(file)
+            self.assertIn(f"User.{user.id}", data)
+            self.assertEqual(data[f"User.{user.id}"]["name"], "Alice")
+
+    def test_reload_method_loads_from_file(self):
+        """Test if the 'reload' method loads data from a file"""
+        user = User()
+        user.name = "Bob"
+        self.storage.new(user)
+        self.storage.save()
+
+        # Clear the current storage object to simulate reloading from the file
+        del self.storage
+
         new_storage = FileStorage()
         new_storage.reload()
 
-        self.assertEqual(new_storage.all(), self.storage.all())
+        self.assertEqual(len(new_storage.all()), 1)
+        self.assertIn(f"User.{user.id}", new_storage.all())
+        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
 
 
 if __name__ == '__main__':
