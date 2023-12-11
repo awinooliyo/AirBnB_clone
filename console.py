@@ -161,7 +161,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = class_name + "." + instance_id
         if key not in storage.all():  # Assuming storage has objects
-            print("**class doesn't exist**")
+            print("** class doesn't exist **")
             return
 
         obj = storage.all()[key]
