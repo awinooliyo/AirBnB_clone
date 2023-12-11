@@ -153,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
-        attr_value = ' '.join(arguments[3:])
+        attr_value = arguments[3]
 
         if not all((class_name, instance_id, attr_name, attr_value)):
             print("** attribute name missing **")
