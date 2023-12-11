@@ -172,22 +172,25 @@ class HBNBCommand(cmd.Cmd):
 
         if hasattr(obj, attr_name):
             attr_type = type(getattr(obj, attr_name))
-            if attr_type not in (str, int, float):
-                print("Attribute type must be string, int, or float")
-                return
-
-            if (attr_name.startswith('"') and attr_name.endswith('"')) or \
-               (attr_name.startswith("'") and attr_name.endswith("'")):
-                attr_name = attr_name[1:-1]  # Remove quotes
-
-            try:
-                cast_value = attr_type(attr_value)
-                setattr(obj, attr_name, cast_value)
-                obj.save()
-                storage.save()
-            except ValueError:
-                print("** invalid value for " + attr_name + " **")
+            if attr_value is not None:
+                if attr_type == str and attr_value.startswith('"') \
+                        and attr_value.endswith('"'):
+                    attr_value = attr_value[1:-1]
+                try:
+                    cast_value = attr_type(attr_value)
+                except ValueError:
+                    print(f" invalid value for {attr_name} ")
+                    return
+                if isinstance(cast_value, (str, int, float)):
+                    setattr(obj, attr_name, cast_value)
+                    obj.save()
+                    storage.save()
+                else:
+                    print("Attribute type must be string, int, or float")
+            else:
+                print(" value missing ")
         else:
+            # Dynamically adding the attribute if it doesn't exist
             setattr(obj, attr_name, attr_value)
             obj.save()
             storage.save()
