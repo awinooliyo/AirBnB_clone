@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """Defines Unittests for FileStorage class"""
 import unittest
-import json
 from models.user import User
-from models.file_storage import FileStorage
+from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
