@@ -30,23 +30,40 @@ class TestFileStorage(unittest.TestCase):
 
     def test_all_method(self):
         """Test the 'all' method"""
-        user = User()
-        user.name = "Charlie"
-        self.storage.new(user)
+        user1 = User()
+        user1.name = "John"
+        user2 = User()
+        user2.name = "Alice"
+        self.storage.new(user1)
+        self.storage.new(user2)
+
         all_objects = self.storage.all()
-        self.assertIn(f"User.{user.id}", all_objects)
+        self.assertIn("User." + user1.id, all_objects.keys())
+        self.assertIn("User." + user2.id, all_objects.keys())
+        self.assertEqual(all_objects["User." + user1.id]["name"], "John")
+        self.assertEqual(all_objects["User." + user2.id]["name"], "Alice")
 
-    def test_init_method_with_args(self):
-        """Test the '__init__' method with arguments"""
-        user = User(id="123", name="David", created_at="2023-01-01T00:00:00")
-        self.storage.new(user)
-        self.assertIn("User.123", self.storage._FileStorage__objects)
+    def test_init_method(self):
+        """Test the '__init__' method with keyword arguments"""
+        user_data = {
+            'id': '123',
+            'name': 'Test User',
+            'created_at': '2022-01-01T00:00:00',
+            'updated_at': '2022-01-01T00:00:00'
+        }
+        user = User(**user_data)
+        user.save()
 
-    def test_new_method(self):
-        """Test the 'new' method"""
-        user = User()
-        self.storage.new(user)
-        self.assertIn(f"User.{user.id}", self.storage._FileStorage__objects)
+        new_storage = FileStorage()
+        new_storage.reload()
+
+        all_users = new_storage.all()
+        self.assertIn("User.123", all_users.keys())
+        self.assertEqual(all_users["User.123"]["name"], "Test User")
+        self.assertEqual(all_users["User.123"]["created_at"],
+                         "2022-01-01T00:00:00")
+        self.assertEqual(all_users["User.123"]["updated_at"],
+                         "2022-01-01T00:00:00")
 
     def test_save_method_saves_to_file(self):
         """Test if the 'save' method saves data to a file"""
@@ -59,22 +76,6 @@ class TestFileStorage(unittest.TestCase):
             data = json.load(file)
             self.assertIn(f"User.{user.id}", data)
             self.assertEqual(data[f"User.{user.id}"]["name"], "Alice")
-
-    def test_reload_method_loads_from_file(self):
-        """Test if the 'reload' method loads data from a file"""
-        user = User()
-        user.name = "Bob"
-        self.storage.new(user)
-        self.storage.save()
-
-        del self.storage
-
-        new_storage = FileStorage()
-        new_storage.reload()
-
-        self.assertEqual(len(new_storage.all()), 1)
-        self.assertIn(f"User.{user.id}", new_storage.all())
-        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
 
     def test_save_method_updates_updated_at(self):
         """Test if the 'save' method updates updated_at attribute"""
@@ -89,14 +90,6 @@ class TestFileStorage(unittest.TestCase):
 
         new_updated_at = user.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
-
-    def test_init_method_without_args(self):
-        """Test the '__init__' method without arguments"""
-        user = User()
-        self.storage.new(user)
-        obj_id = f"User.{user.id}"
-        obj = self.storage.all().get(obj_id)
-        self.assertIsInstance(obj, User)
 
     def test_save_method_does_not_write_to_file(self):
         """Test if the 'save' method updates objects without writing to file"""
@@ -114,7 +107,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(objects_before_save, objects_after_save)
 
     def test_save_method(self):
-        """Test the 'save' method to update objects and not save to file"""
+        """Test the 'save' method"""
         user = User()
         user.name = "Alice"
         self.storage.new(user)
@@ -127,6 +120,48 @@ class TestFileStorage(unittest.TestCase):
 
         # Ensure that objects don't change after saving without file write
         self.assertEqual(objects_before_save, objects_after_save)
+
+    def test_save(self):
+        """Test the 'save' method without arguments"""
+        user = User()
+        user.name = "John"
+        self.storage.new(user)
+        self.storage.save()
+        self.storage.reload()
+
+        self.assertIn("User." + user.id, self.storage.all().keys())
+        self.assertEqual(self.storage.all()["User." + user.id]["name"], "John")
+
+    def test_reload_method_loads_from_file(self):
+        """Test if the 'reload' method loads data from a file"""
+        user = User()
+        user.name = "Bob"
+        self.storage.new(user)
+        self.storage.save()
+
+        del self.storage
+
+        new_storage = FileStorage()
+        new_storage.reload()
+
+        self.assertEqual(len(new_storage.all()), 1)
+        self.assertIn(f"User.{user.id}", new_storage.all())
+        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
+
+    def test_reload_method(self):
+        """Test the 'reload' method"""
+        user = User()
+        user.name = "John"
+        self.storage.new(user)
+        self.storage.save()
+
+        # Reset the storage object
+        del self.storage
+        new_storage = FileStorage()
+        new_storage.reload()
+
+        self.assertIn("User." + user.id, new_storage.all().keys())
+        self.assertEqual(new_storage.all()["User." + user.id]["name"], "John")
 
 
 if __name__ == '__main__':
