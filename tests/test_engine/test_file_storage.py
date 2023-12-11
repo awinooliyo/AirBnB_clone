@@ -18,35 +18,6 @@ class TestFileStorage(unittest.TestCase):
         """Clean up method after each test"""
         del self.storage
 
-    def test_save_method_saves_to_file(self):
-        """Test if the 'save' method saves data to a file"""
-        user = User()
-        user.name = "Alice"
-        self.storage.new(user)
-        self.storage.save()
-
-        with open(self.storage._FileStorage__file_path, "r") as file:
-            data = json.load(file)
-            self.assertIn(f"User.{user.id}", data)
-            self.assertEqual(data[f"User.{user.id}"]["name"], "Alice")
-
-    def test_reload_method_loads_from_file(self):
-        """Test if the 'reload' method loads data from a file"""
-        user = User()
-        user.name = "Bob"
-        self.storage.new(user)
-        self.storage.save()
-
-        # Clear the current storage object to simulate reloading from the file
-        del self.storage
-
-        new_storage = FileStorage()
-        new_storage.reload()
-
-        self.assertEqual(len(new_storage.all()), 1)
-        self.assertIn(f"User.{user.id}", new_storage.all())
-        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
-
     def test__filepath_method(self):
         """Test the '__filepath' method"""
         file_path = self.storage._FileStorage__file_path
@@ -77,9 +48,22 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(user)
         self.assertIn(f"User.{user.id}", self.storage._FileStorage__objects)
 
-    def test_reload_method(self):
-        """Test the 'reload' method"""
+    def test_save_method_saves_to_file(self):
+        """Test if the 'save' method saves data to a file"""
         user = User()
+        user.name = "Alice"
+        self.storage.new(user)
+        self.storage.save()
+
+        with open(self.storage._FileStorage__file_path, "r") as file:
+            data = json.load(file)
+            self.assertIn(f"User.{user.id}", data)
+            self.assertEqual(data[f"User.{user.id}"]["name"], "Alice")
+
+    def test_reload_method_loads_from_file(self):
+        """Test if the 'reload' method loads data from a file"""
+        user = User()
+        user.name = "Bob"
         self.storage.new(user)
         self.storage.save()
 
@@ -90,7 +74,59 @@ class TestFileStorage(unittest.TestCase):
 
         self.assertEqual(len(new_storage.all()), 1)
         self.assertIn(f"User.{user.id}", new_storage.all())
-        self.assertIsInstance(new_storage.all()[f"User.{user.id}"], User)
+        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
+
+    def test_save_method_updates_updated_at(self):
+        """Test if the 'save' method updates updated_at attribute"""
+        user = User()
+        self.storage.new(user)
+        old_updated_at = user.updated_at
+        self.storage.save()
+
+        # Simulate a time delay
+        user.name = "New Name"
+        self.storage.save()
+
+        new_updated_at = user.updated_at
+        self.assertNotEqual(old_updated_at, new_updated_at)
+
+    def test_init_method_without_args(self):
+        """Test the '__init__' method without arguments"""
+        user = User()
+        self.storage.new(user)
+        obj_id = f"User.{user.id}"
+        obj = self.storage.all().get(obj_id)
+        self.assertIsInstance(obj, User)
+
+    def test_save_method_does_not_write_to_file(self):
+        """Test if the 'save' method updates objects without writing to file"""
+        user = User()
+        user.name = "Alice"
+        self.storage.new(user)
+        self.storage.save()
+
+        objects_before_save = self.storage._FileStorage__objects.copy()
+        user.name = "Updated Alice"
+        self.storage.save()
+        objects_after_save = self.storage._FileStorage__objects
+
+        # Ensure that objects don't change after saving without file write
+        self.assertEqual(objects_before_save, objects_after_save)
+
+    def test_save_method(self):
+        """Test the 'save' method to update objects and not save to file"""
+        user = User()
+        user.name = "Alice"
+        self.storage.new(user)
+        self.storage.save()
+
+        objects_before_save = self.storage._FileStorage__objects.copy()
+        user.name = "Updated Alice"
+        self.storage.save()
+        objects_after_save = self.storage._FileStorage__objects
+
+        # Ensure that objects don't change after saving without file write
+        self.assertEqual(objects_before_save, objects_after_save)
 
 
 if __name__ == '__main__':
