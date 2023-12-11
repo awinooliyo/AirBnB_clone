@@ -107,6 +107,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             class_name = arg_parts[0]  # Extract the first argument
 
+            # Check for quoted string argument with spaces
+            if class_name.startswith('"') and class_name.endswith('"'):
+                class_name = class_name[1:-1]  # Remove quotes
+
             if class_name not in HBNBCommand.__classes:
                 print("** class doesn't exist ** ")
             else:
@@ -114,7 +118,10 @@ class HBNBCommand(cmd.Cmd):
                 # Retrieve instances of the specified class
                 for obj in storage.all().values():
                     if obj.__class__.__name__ == class_name:
-                        obj_list.append(str(obj))
+                        obj_str = str(obj)
+
+                        obj_str = obj_str.replace('"', "'")
+                        obj_list.append(obj_str)
                 print(obj_list)
 
     def do_update(self, arg):
@@ -124,46 +131,63 @@ class HBNBCommand(cmd.Cmd):
         """
         arguments = arg.split()
 
-        if len(arguments) < 4:
-            print("** insufficient arguments for update **")
+        if not arguments:
+            print("** class name missing **")
             return
 
         class_name = arguments[0]
-        instance_id = arguments[1]
-        attr_name = arguments[2]
-        attr_value = ' '.join(arguments[3:]) if len(arguments) > 3 else None
 
-        key = f"{class_name}.{instance_id}"
-        if key not in storage.all():
-            print("** no instance found **")
+        if len(arguments) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = arguments[1]
+
+        if len(arguments) < 3:
+            print("** attribute name missing **")
+            return
+
+        attr_name = arguments[2]
+
+        if len(arguments) < 4:
+            print("** value missing **")
+            return
+
+        attr_value = ' '.join(arguments[3:])
+
+        if not all((class_name, instance_id, attr_name, attr_value)):
+            print("** attribute name missing **")
+            return
+
+        key = class_name + "." + instance_id
+        if key not in storage.all():  # Assuming storage has objects
+            print("** class doesn't exist **")
             return
 
         obj = storage.all()[key]
+
         if attr_name in ["id", "created_at", "updated_at"]:
             print("** cannot update id, created_at, or updated_at **")
             return
 
         if hasattr(obj, attr_name):
             attr_type = type(getattr(obj, attr_name))
-            if attr_value is not None:
-                if attr_type == str and attr_value.startswith('"') \
-                        and attr_value.endswith('"'):
-                    attr_value = attr_value[1:-1]
-                try:
-                    cast_value = attr_type(attr_value)
-                except ValueError:
-                    print(f"** invalid value for {attr_name} **")
-                    return
-                if isinstance(cast_value, (str, int, float)):
-                    setattr(obj, attr_name, cast_value)
-                    obj.save()
-                    storage.save()
-                else:
-                    print("Attribute type must be string, int, or float")
-            else:
-                print("** value missing **")
+            if attr_type not in (str, int, float):
+                print("Attribute type must be string, int, or float")
+                return
+
+            if (class_name.startswith('"') and class_name.endswith('"')) or \
+               (class_name.startswith("'") and class_name.endswith("'")):
+                class_name = class_name[1:-1]  # Remove quotes
+
+            try:
+                cast_value = attr_type(attr_value)
+                setattr(obj, attr_name, cast_value)
+                obj.save()
+                storage.save()
+            except ValueError:
+                print("** invalid value for " + attr_name + " **")
         else:
-            # Dynamically adding the attribute if it doesn't exist
             setattr(obj, attr_name, attr_value)
             obj.save()
             storage.save()
