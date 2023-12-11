@@ -176,9 +176,9 @@ class HBNBCommand(cmd.Cmd):
                 print("Attribute type must be string, int, or float")
                 return
 
-            if (class_name.startswith('"') and class_name.endswith('"')) or \
-               (class_name.startswith("'") and class_name.endswith("'")):
-                class_name = class_name[1:-1]  # Remove quotes
+            if (attr_name.startswith('"') and attr_name.endswith('"')) or \
+               (attr_name.startswith("'") and attr_name.endswith("'")):
+                attr_name = attr_name[1:-1]  # Remove quotes
 
             try:
                 cast_value = attr_type(attr_value)
