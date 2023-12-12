@@ -41,7 +41,7 @@ class BaseModel:
         )
 
     def save(self):
-        """Updates yje public instance attribute
+        """Updates the public instance attribute
         with the current datetime
         """
         from models import storage
