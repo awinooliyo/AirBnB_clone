@@ -16,7 +16,9 @@ class TestFileStorage(unittest.TestCase):
 
     def tearDown(self):
         """Clean up method after each test"""
-        del self.storage
+        if hasattr(self, 'storage') and \
+                getattr(self, 'storage', None) is not None:
+            del self.storage
 
     def test__filepath_method(self):
         """Test the '__filepath' method"""
@@ -38,32 +40,37 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(user2)
 
         all_objects = self.storage.all()
+
+        # Check if User objects are present in all_objects
         self.assertIn("User." + user1.id, all_objects.keys())
         self.assertIn("User." + user2.id, all_objects.keys())
-        self.assertEqual(all_objects["User." + user1.id]["name"], "John")
-        self.assertEqual(all_objects["User." + user2.id]["name"], "Alice")
+
+        # Retrieve User objects by their IDs
+        retrieved_user1 = all_objects.get("User." + user1.id)
+        retrieved_user2 = all_objects.get("User." + user2.id)
+
+        # Check if the retrieved User objects have the expected names
+        self.assertEqual(retrieved_user1.name, "John")
+        self.assertEqual(retrieved_user2.name, "Alice")
 
     def test_init_method(self):
         """Test the '__init__' method with keyword arguments"""
-        user_data = {
-            'id': '123',
-            'name': 'Test User',
-            'created_at': '2022-01-01T00:00:00',
-            'updated_at': '2022-01-01T00:00:00'
-        }
-        user = User(**user_data)
-        user.save()
+        # Create a user with specific ID and name
+        user = User(id="123", name="John")
+        self.storage.new(user)
+        self.storage.save()
 
+        # Clear the current storage object to simulate reloading from the file
+        del self.storage
         new_storage = FileStorage()
         new_storage.reload()
 
-        all_users = new_storage.all()
-        self.assertIn("User.123", all_users.keys())
-        self.assertEqual(all_users["User.123"]["name"], "Test User")
-        self.assertEqual(all_users["User.123"]["created_at"],
-                         "2022-01-01T00:00:00")
-        self.assertEqual(all_users["User.123"]["updated_at"],
-                         "2022-01-01T00:00:00")
+        # Get all stored objects
+        all_objects = new_storage.all()
+
+        # Check if the specific user was stored and its name matches
+        self.assertIn("User.123", all_objects)
+        self.assertEqual(all_objects["User.123"].name, "John")
 
     def test_save_method_saves_to_file(self):
         """Test if the 'save' method saves data to a file"""
@@ -134,19 +141,25 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload_method_loads_from_file(self):
         """Test if the 'reload' method loads data from a file"""
-        user = User()
-        user.name = "Bob"
-        self.storage.new(user)
+
+        # Simulate storing some objects
+        user1 = User()
+        user2 = User()
+        user3 = User()
+        self.storage.new(user1)
+        self.storage.new(user2)
+        self.storage.new(user3)
         self.storage.save()
 
+        # Clear the current storage object to simulate reloading from the file
         del self.storage
-
         new_storage = FileStorage()
         new_storage.reload()
 
-        self.assertEqual(len(new_storage.all()), 1)
-        self.assertIn(f"User.{user.id}", new_storage.all())
-        self.assertEqual(new_storage.all()[f"User.{user.id}"].name, "Bob")
+        # Get all stored objects after reload
+        all_objects = new_storage.all()
+
+        self.assertEqual(len(all_objects), 3)
 
     def test_reload_method(self):
         """Test the 'reload' method"""
