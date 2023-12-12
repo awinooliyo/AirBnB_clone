@@ -6,7 +6,11 @@ from models.base_model import BaseModel
 from models import storage
 import json
 from models.user import User
-
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
 
@@ -15,7 +19,15 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
 
-    __classes = ["BaseModel", "User"]
+    __classes = {
+            "BaseModel",
+            "User",
+            "State",
+            "City",
+            "Amenity",
+            "Place",
+            "Review"
+            }
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it
