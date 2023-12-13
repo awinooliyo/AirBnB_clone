@@ -38,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
         elif arg not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
+            print("** class doesn\'t exist **")
         else:
             try:
                 new_instance = eval(arg)()
@@ -92,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
                 key = f"{class_name}.{class_id}"
 
                 if arguments[0] not in HBNBCommand.__classes:
-                    print("** class doesn't exist **")
+                    print("** class doesn\'t exist **")
                 elif key not in instances:
                     print("** no instance found **")
                 else:
