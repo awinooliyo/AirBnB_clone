@@ -1,1 +1,1 @@
-Web Static tasks
+Project: Web Static
