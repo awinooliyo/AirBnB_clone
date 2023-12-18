@@ -40,13 +40,15 @@
     margin-left: auto;
 }
 
-h3{
+.filters h3{
     font-weight: 600;
+    padding: 0;
 }
 
-h4{
+.filters h4{
     font-weight: 400;
     font-size: 14px;
+    padding: 0;
 }
 /* 6 Filters */
 .locations,
@@ -89,7 +91,7 @@ h4{
     display: none;
     position: absolute;
     width: 25%;
-    padding: 10px;
+    padding: 0 0 20px 30px;
     z-index: 1;
 }
 
@@ -97,6 +99,7 @@ h4{
 .locations .popover {
     top: 100%;
     right: 0;
+
 }
 
 .locations:hover .popover,
@@ -110,6 +113,12 @@ h4{
 
 .popover ul li {
     margin-bottom: 5px;
+}
+
+.filters .locations ul h2 {
+    font-size: 16px;
+    margin-top: 20px;
+}
 
 
 
