@@ -49,24 +49,27 @@ h4{
     font-size: 14px;
 }
 /* 6 Filters */
-.popover{
+.locations,
+.amenities {
+    width: 50%;
     position: relative;
-    display: inline-block;
 }
 
 /* Header 2 Style */
-.filters h2{
+.popover h2{
     font-size: 16px;
 }
 
-.filters.locations ul li,
-.filters.amenities ul li {
+.locations ul li,
+.amenities ul li {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* Background color */
-.filters.locations.popover,
-.filters.amenities.popover {
+.filters .locations .popover,
+.filters .amenities .popover {
     background-color:  #FAFAFA;
     width: 25%;
     border: 1px solid #DDDDDD;
@@ -79,19 +82,34 @@ h4{
 }
 
 /* Popover menu for amenities and locations*/
-filters.popover{
+.popover{
     background-color: #FAFAFA;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     display: none;
     position: absolute;
-    width: 100%;
+    width: 25%;
+    padding: 10px;
+    z-index: 1;
 }
 
-.filters.filters.locations:hover .popover,
-.filters.filters.amenities:hover .popover {
+.amenities .popover,
+.locations .popover {
+    top: 100%;
+    right: 0;
+}
+
+.locations:hover .popover,
+.amenities:hover .popover {
     display: block;
 }
+
+.popover ul {
+    list-style: none;
+    padding: 0;
+
+.popover ul li {
+    margin-bottom: 5px;
 
 
 
