@@ -1,3 +1,4 @@
+/* Styling Filters Class */
 .filters{
     background-color: #ffffff;
     height: 70px;
@@ -7,7 +8,7 @@
     display: flex;
     position:relative;
 }
-
+/* Styling the search Button */
 .filters button{
     font-size: 18px;
     background-color: #FF5A5F;
@@ -21,11 +22,12 @@
     margin-right: 30px;
     margin-left: auto;
 }
-
+/* Opacity when one hovers over Search Button */
 .filters button:hover {
     opacity:0.9;
 }
 
+/* Styling Locations and Amenities Popover */
 .locations{
     height: 100%;
     width: 25%;
@@ -37,6 +39,7 @@
     width: 25%;
 }
 
+/* Styling header H3 for locations and amenities classes */
 .locations h3,
 .amenities h3{
     font-weight: 600;
@@ -45,6 +48,7 @@
     margin-bottom: 5px;
 }
 
+/* Styling header h4 for locations and amenities classes */
 .locations h4,
 .amenities h4{
     font-weight: 400;
@@ -54,7 +58,7 @@
     margin-bottom: auto;
 }
 
-/* POPOVER FILTER*/
+/* Styling popover content*/
 .popover{
     display: none;
     list-style-type: none;
@@ -72,6 +76,7 @@
     line-height: 1.5;
 }
 
+/* Styling header h2 for popover content */
 .popover h2{
     font-size: 16px;
     margin-bottom: 5px;
@@ -79,12 +84,13 @@
     margin-left: -20px;
 }
 
+/* Styling the ul and the li under the h2 */
 .popover ul{
     list-style-type: none;
-    /* padding-left: 20px; */
     margin-left: -40px;
 }
 
+/* Styling hover behavior for amenities and locations class */
 .locations:hover .popover,
 .amenities:hover .popover{
     display: block;
