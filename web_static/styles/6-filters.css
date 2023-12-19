@@ -45,7 +45,7 @@
     font-weight: 600;
     margin-left: 40px;
     margin-top: 15px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 /* Styling header h4 for locations and amenities classes */
@@ -66,10 +66,10 @@
     width: auto;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
-    position:relative;
+    position: relative;
     margin-left: -1px;
     margin-right: -1px;
-    margin-top: 15px;
+    margin-top: 20px;
     padding-top: 20px;
     padding-bottom: 40px;
     padding-left: 40px;
