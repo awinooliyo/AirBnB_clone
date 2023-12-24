@@ -7,6 +7,7 @@
     border-radius: 4px;
     display: flex;
     position:relative;
+    flex-direction: row;
 }
 /* Styling the search Button */
 .filters button{
@@ -15,6 +16,7 @@
     color: #FFFFFF;
     height: 48px;
     width: 20%;
+    order: 1;
     border: none;
     border-radius: 4px;
     margin-top: auto;
@@ -60,20 +62,16 @@
 
 /* Styling popover content*/
 .popover{
-    display: none;
     list-style-type: none;
-    background-color: #FAFAFA;
-    width: auto;
-    border: 1px solid #DDDDDD;
+    border: 1px solid transparent;
     border-radius: 4px;
-    position: relative;
-    margin-left: -1px;
-    margin-right: -1px;
-    margin-top: 20px;
-    padding-top: 20px;
-    padding-bottom: 40px;
-    padding-left: 40px;
-    line-height: 1.5;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #FAFAFA;
+    max-height: 0;
+    overflow-y: hidden;
+    transition: .2s;
+    padding: 0 1.5rem;    
 }
 
 /* Styling header h2 for popover content */
@@ -81,17 +79,20 @@
     font-size: 16px;
     margin-bottom: 5px;
     line-height: 1;
-    margin-left: -20px;
 }
 
 /* Styling the ul and the li under the h2 */
 .popover ul{
     list-style-type: none;
-    margin-left: -40px;
+    margin-left: 0;
+    padding-left: .5rem;
 }
 
 /* Styling hover behavior for amenities and locations class */
-.locations:hover .popover,
-.amenities:hover .popover{
-    display: block;
+.locations:hover > .popover, .amenities:hover > .popover{
+    max-height: 1000%;
+    transition: .2s;
+    overflow-y: auto;
+    border: 1px solid #DDDDDD;
+    padding: 1rem 1.5rem;
 }

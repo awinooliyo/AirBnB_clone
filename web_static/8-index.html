@@ -1,43 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Meta tags-->
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+
+        <!--Title of the Page-->
         <title>HBnB</title>
+
+        <!--Favicon-->
+        <link rel="icon" type="images/png" href="images/icon.png">
+
+        <!--Style Sheets-->
+        <link rel="stylesheet" href="styles/4-common.css">
         <link rel="stylesheet" href="styles/3-header.css">
         <link rel="stylesheet" href="styles/3-footer.css">
         <link rel="stylesheet" href="styles/6-filters.css">
         <link rel="stylesheet" href="styles/8-places.css">
-        <link rel="icon" type="images/png" href="images/icon.png">
     </head>
     <body>
-        <header></header>
+        <header>
+        </header>
         <div class="container">
+            <!-- Filters Section -->
             <section class="filters">
                 <div class="locations">
                     <h3>States</h3>
                     <h4>Alabama, New York, ...</h4>
-                    <div class="popover">
-                        <h2>Alabama:</h2>
+                    <ul class="popover">
+                        <li>
+                            <h2>Alabama:</h2>
                             <ul>
                                 <li>Auburn</li>
                                 <li>Mobile</li>
                                 <li>Montgomery</li>
                                 <li>Huntsville</li>
                             </ul> 
-                        <h2>Florida:</h2>
+                        </li>
+                        <li>
+                            <h2>Florida:</h2>
                             <ul>
                                 <li>Miami</li>
                                 <li>Phoenix</li>
                                 <li>Jacksonville</li>
                                 <li>Destin</li>
-                            </ul>
-                    </div>
+                            </ul> 
+                        </li>     
+                    </ul>
                 </div>
                 <div class="amenities">
                     <h3>Amenities</h3>
                     <h4>Swimming Pool, 4 Beds, Bar</h4>
-                    <div class="popover">
-                        <ul>
+                        <ul class="popover">
                             <li>Internet</li>
                             <li>TV</li>
                             <li>Kitchen</li>
@@ -45,46 +59,93 @@
                             <li>Washing Machine</li>
                             <li>Swimming Pool</li>
                         </ul>
-                    </div>
                 </div>
                 <button type="button">Search</button>
             </section>
+            <!-- Places -->
             <section class="places">
                 <h1>Places</h1>
                 <article>
                     <h2>My Home</h2>
-                    <div class="price_by_night">
-                        $80
-                    </div>
+                    <div class="price_by_night">$99</div>
                     <div class="information">
                         <div class="max_guest">
+                            <img src="images/icon_group.png" alt="maximum number of guests">
                             <p>2 Guests</p>
                         </div>
                         <div class="number_rooms">
+                            <img src="images/icon_bed.png" alt="number of bedrooms">
                             <p>1 Bedroom</p>
                         </div>
                         <div class="number_bathrooms">
+                            <img src="images/icon_bath.png" alt="number of bathrooms">
                             <p>1 Bathroom</p>
                         </div>
-                        <div class="user">
-                            <p>
-                                <strong>Owner:</strong> Ngugi Wa Thiong'o
-                            </p>
-                        </div>
-                        <div class="description">
-                            <p>Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry. Lorem Ipsum has been  
-                                the industry's standard dummy text ever since the 
-                                1500s, when an unknown printer took a galley of type 
-                                and scrambled it to make a type specimen book.</p>
-                        </div>
+                    </div>
+                    <div class="user">
+                        <p>
+                            <strong>Owner:</strong> Koome Uhuru
+                        </p>
+                    </div>
+                    <div class="description">
+                        <p>Newly built, contemporary design Private Home Apartment , located in the breathtaking island of Zanzibar, facing the white beach of Kiwengwa, just ten minutes far distance from the beautiful island of Mnemba. The Apartment  features a unique blend of custom African and Italian décor and has its own private beach area. 
+                            Destination fee tax of 8 dollars per person per night to be paid cash on spot.</p>
                     </div>
                 </article>
                 <article>
                     <h2>Tiny House</h2>
+                    <div class="price_by_night">$65</div>
+                    <div class="information">
+                        <div class="max_guest">
+                            <img src="images/icon_group.png" alt="maximum number of guests">
+                            <p>2 Guests</p>
+                        </div>
+                        <div class="number_rooms">
+                            <img src="images/icon_bed.png" alt="number of bedrooms">
+                            <p>1 Bedroom</p>
+                        </div>
+                        <div class="number_bathrooms">
+                            <img src="images/icon_bath.png" alt="number of bathrooms">
+                            <p>1 Bathroom</p>
+                        </div>
+                    </div>
+                    <div class="user">
+                        <p>
+                            <strong>Owner:</strong> Koome Uhuru
+                        </p>
+                    </div>
+                    <div class="description">
+                        <p>Newly built, contemporary design Private Home Apartment , located in the breathtaking island of Zanzibar, facing the white beach of Kiwengwa, just ten minutes far distance from the beautiful island of Mnemba. The Apartment  features a unique blend of custom African and Italian décor and has its own private beach area. 
+                            Destination fee tax of 8 dollars per person per night to be paid cash on spot. Newly built, contemporary design Private Home Apartment , located in the breathtaking island of Zanzibar, facing the white beach of Kiwengwa, just ten minutes far distance from the beautiful island of Mnemba. The Apartment  features a unique blend of custom African and Italian décor and has its own private beach area. 
+                            Destination fee tax of 8 dollars per person per night to be paid cash on spot.</p>
+                    </div>
                 </article>
                 <article>
                     <h2>A Suit</h2>
+                    <div class="price_by_night">$30</div>
+                    <div class="information">
+                        <div class="max_guest">
+                            <img src="images/icon_group.png" alt="maximum number of guests">
+                            <p>2 Guests</p>
+                        </div>
+                        <div class="number_rooms">
+                            <img src="images/icon_bed.png" alt="number of bedrooms">
+                            <p>1 Bedroom</p>
+                        </div>
+                        <div class="number_bathrooms">
+                            <img src="images/icon_bath.png" alt="number of bathrooms">
+                            <p>1 Bathroom</p>
+                        </div>
+                    </div>
+                    <div class="user">
+                        <p>
+                            <strong>Owner:</strong> Koome Uhuru
+                        </p>
+                    </div>
+                    <div class="description">
+                        <p>Newly built, contemporary design Private Home Apartment , located in the breathtaking island of Zanzibar, facing the white beach of Kiwengwa, just ten minutes far distance from the beautiful island of Mnemba. The Apartment  features a unique blend of custom African and Italian décor and has its own private beach area. 
+                            Destination fee tax of 8 dollars per person per night to be paid cash on spot.</p>
+                    </div>
                 </article>
             </section>
         </div>
