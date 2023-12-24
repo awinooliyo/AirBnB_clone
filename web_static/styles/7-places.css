@@ -19,5 +19,9 @@ article {
     margin: 20px;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
-    text-align: center;
+    text-align: center;}
+.flexbox{
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: center;
 }
